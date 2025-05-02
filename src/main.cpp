@@ -1,12 +1,27 @@
 #include <vulkan/vulkan.h>
 #include <App.hpp>
+#include <thread>
+#include <atomic>
+#include <Renderer.hpp>
+
+void spawn_render_thread(QubeWindow *window, std::atomic<bool> *done)
+{
+    auto engine = std::make_unique<Engine>(window);
+    while (!*done)
+    {
+        /* code */
+    }
+}
 
 int main(int argc, char const *argv[])
 {
     static constexpr int WIDTH = 800;
     static constexpr int HEIGHT = 600;
-    auto window {std::make_unique<QubeWindow>(WIDTH, HEIGHT, "Vulan window!")};
-    App qubeApp(window);
+    QubeWindow window{WIDTH, HEIGHT, "Vulan window!"};
+
+    App qubeApp(&window);
+    std::atomic<bool> done;
+    std::thread render_thread(spawn_render_thread, &window, &done);
     try
     {
         qubeApp.run();
@@ -15,6 +30,9 @@ int main(int argc, char const *argv[])
     {
         std::cerr << e.what() << '\n';
     }
+
+    done = true;
+    render_thread.join();
 
     return 0;
 }

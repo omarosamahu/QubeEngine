@@ -1,14 +1,15 @@
 #pragma once
 
-#include <Qube_window.hpp>
-#include <memory>
+#include <QubeWindow.hpp>
+// #include <Logger.hpp>
+
 class App
 {
 public:
     App() = default;
-    explicit App(std::unique_ptr<QubeWindow>& window);
+    explicit App(QubeWindow *window);
     void run();
 
 private:
-    std::unique_ptr<QubeWindow> window;
+    QubeWindow *window;
 };

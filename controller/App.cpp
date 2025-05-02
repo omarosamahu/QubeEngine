@@ -1,6 +1,6 @@
-#include "App.hpp"
+#include <App.hpp>
 
-App::App(std::unique_ptr<QubeWindow> &window) : window{std::move(window)}
+App::App(QubeWindow *window) : window{window}
 {
 }
 
