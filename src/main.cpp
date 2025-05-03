@@ -3,6 +3,7 @@
 #include <thread>
 #include <atomic>
 #include <Renderer.hpp>
+#include <Logger.hpp>
 
 void spawn_render_thread(QubeWindow *window, std::atomic<bool> *done)
 {
@@ -22,13 +23,13 @@ int main(int argc, char const *argv[])
     App qubeApp(&window);
     std::atomic<bool> done;
     std::thread render_thread(spawn_render_thread, &window, &done);
+    auto logger = Logger::getInstance();
     try
     {
         qubeApp.run();
     }
     catch (const std::exception &e)
     {
-        std::cerr << e.what() << '\n';
     }
 
     done = true;

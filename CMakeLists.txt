@@ -14,8 +14,8 @@ include_directories(
 
 # add_library(LOGGER_LIB SHARED ${CMAKE_CURRENT_SOURCE_DIR}/logging/Logger.cpp)
 set(SOURCE_FILES
-${CMAKE_CURRENT_SOURCE_DIR}/logging/Logger.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/logging/Logger.cpp
+# ${CMAKE_CURRENT_SOURCE_DIR}/logging/Logger.hpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/logging/Logger.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/backend/QubeWindow.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/controller/App.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/renderer/Renderer.cpp
