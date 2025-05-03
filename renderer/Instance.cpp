@@ -3,8 +3,6 @@
 
 vk::Instance make_instance(const std::string &appName, std::deque<std::function<void()>> &deleteionQueue)
 {
-    // auto logger = Logger::getInstance();
-    // std::string msg = "Making an instance...";
     LOGINFO("Making an instance...");
     auto version = vk::enumerateInstanceVersion().value;
     vk::ApplicationInfo appInfo(appName.c_str(), version, nullptr, version, version);
@@ -16,11 +14,12 @@ vk::Instance make_instance(const std::string &appName, std::deque<std::function<
     {
         throw std::invalid_argument("Failed to get required GLFW Vulkan extensions!");
     }
-    std::cout << "Extentions to be requested\n";
+
+    LOGINFO("Extentions to be requested");
 
     for (size_t i{0U}; i < glfwExtentionCount; ++i)
     {
-        std::cout << glfwExtentions[i] << "\n";
+        LOGINFO(glfwExtentions[i]);
     }
 
     vk::InstanceCreateInfo createInfo({}, &appInfo,
@@ -36,6 +35,6 @@ vk::Instance make_instance(const std::string &appName, std::deque<std::function<
 
     deleteionQueue.push_back([handle]()
                              { vkDestroyInstance(handle, nullptr); 
-                            std::cout << "Deleted instance\n"; });
+                            LOGINFO("Deleted instance"); });
     return instance;
 }

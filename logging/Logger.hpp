@@ -1,8 +1,10 @@
+#pragma once
 #include <iostream>
 #include <memory>
 #include <mutex>
 #include <sstream>
 #include <thread>
+#include <filesystem>
 
 enum class Modes : uint8_t
 {
@@ -30,20 +32,14 @@ public:
         return instance;
     }
 
-    void setMode(const Modes mode)
-    {
-        this->loggingMode = mode;
-    }
-
     template <typename... Args>
-    void LOG(const char *funcName, const Modes mode, Args &&...message)
+    void LOG(const char *funcName, const char *file, uint32_t line, const Modes mode, Args &&...message)
     {
-        // Log message
-        // Function name : [time] : Mode | message
         std::lock_guard<std::mutex> lck(mtx);
         std::ostringstream oss;
+        std::string filename = std::filesystem::path(file).filename().string();
         (oss << ... << std::forward<Args>(message));
-        std::cout << '[' << levelToString(mode) << "] [" << funcName << "] " << oss.str() << '\n';
+        std::cout << '[' << levelToString(mode) << "] | [" << funcName << ":" << line << "] | [" << filename << "] | " << oss.str() << '\n';
     }
 
     std::string levelToString(const Modes mode)
@@ -73,32 +69,32 @@ private:
     std::mutex mtx;
 };
 
-#define LOGINFO(...)                                                   \
-    do                                                                 \
-    {                                                                  \
-        Logger::getInstance().LOG(__func__,  Modes::INFO, __VA_ARGS__); \
+#define LOGINFO(...)                                                                       \
+    do                                                                                     \
+    {                                                                                      \
+        Logger::getInstance().LOG(__func__, __FILE__, __LINE__, Modes::INFO, __VA_ARGS__); \
     } while (0)
 
-#define LOGVERBOSE(...)                                                   \
-    do                                                                    \
-    {                                                                     \
-        Logger::getInstance().LOG(__func__, Modes::VERBOSE, __VA_ARGS__); \
+#define LOGVERBOSE(...)                                                                       \
+    do                                                                                        \
+    {                                                                                         \
+        Logger::getInstance().LOG(__func__, __FILE__, __LINE__, Modes::VERBOSE, __VA_ARGS__); \
     } while (0)
 
-#define LOGWARNING(...)                                                   \
-    do                                                                    \
-    {                                                                     \
-        Logger::getInstance().LOG(__func__, Modes::WARNING, __VA_ARGS__); \
+#define LOGWARNING(...)                                                                       \
+    do                                                                                        \
+    {                                                                                         \
+        Logger::getInstance().LOG(__func__, __FILE__, __LINE__, Modes::WARNING, __VA_ARGS__); \
     } while (0)
 
-#define LOGDEBUG(...)                                                   \
-    do                                                                  \
-    {                                                                   \
-        Logger::getInstance().LOG(__func__, Modes::DEBUG, __VA_ARGS__); \
+#define LOGDEBUG(...)                                                                       \
+    do                                                                                      \
+    {                                                                                       \
+        Logger::getInstance().LOG(__func__, __FILE__, __LINE__, Modes::DEBUG, __VA_ARGS__); \
     } while (0)
 
-#define LOGERROR(...)                                                   \
-    do                                                                  \
-    {                                                                   \
-        Logger::getInstance().LOG(__func__, Modes::ERROR, __VA_ARGS__); \
+#define LOGERROR(...)                                                                       \
+    do                                                                                      \
+    {                                                                                       \
+        Logger::getInstance().LOG(__func__, __FILE__, __LINE__, Modes::ERROR, __VA_ARGS__); \
     } while (0)

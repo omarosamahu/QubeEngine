@@ -9,7 +9,7 @@ QubeWindow::~QubeWindow()
 {
     glfwDestroyWindow(window);
     glfwTerminate();
-    // std::cout << "Destroying the window\n";
+    LOGINFO("Destroying the window");
 }
 
 void QubeWindow::initWindow()
@@ -25,10 +25,10 @@ void QubeWindow::initWindow()
     window = glfwCreateWindow(width, height, name.c_str(), nullptr, nullptr);
     if (window)
     {
-        // std::cout << "Successfully make a window " << name << " Width: " << width << " Height: " << height << "\n";
+        LOGINFO("Successfully make a window ", name, " Width: ", width, " Height: ", height);
     }
     else
     {
-        // std::cout << "Glfw Window created failed\n";
+        LOGERROR("Glfw Window created failed");
     }
 }
