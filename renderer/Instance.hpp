@@ -1,8 +1,5 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-#include <functional>
-#include <deque>
-#include <QubeWindow.hpp>
+#include <common.hpp>
 
-vk::Instance make_instance(const std::string &appName, std::deque<std::function<void()>> &deleteionQueue);
+vk::Instance make_instance(const std::string &appName, std::deque<std::function<void(vk::Instance)>> &deleteionQueue);

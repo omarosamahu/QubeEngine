@@ -1,7 +1,7 @@
 #include <Instance.hpp>
 #include <Logger.hpp>
 
-vk::Instance make_instance(const std::string &appName, std::deque<std::function<void()>> &deleteionQueue)
+vk::Instance make_instance(const std::string &appName, std::deque<std::function<void(vk::Instance)>> &deleteionQueue)
 {
     LOGINFO("Making an instance...");
     auto version = vk::enumerateInstanceVersion().value;
@@ -33,8 +33,8 @@ vk::Instance make_instance(const std::string &appName, std::deque<std::function<
     vk::Instance instance = instanceAttempt.value;
     VkInstance handle = instanceAttempt.value;
 
-    deleteionQueue.push_back([handle]()
-                             { vkDestroyInstance(handle, nullptr); 
+    deleteionQueue.push_back([handle](vk::Instance instance)
+                             { instance.destroy(); 
                             LOGINFO("Deleted instance"); });
     return instance;
 }
