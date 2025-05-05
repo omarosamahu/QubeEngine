@@ -11,8 +11,10 @@ public:
     ~Engine();
 
 private:
-    /// @brief Deletion queue
-    std::deque<std::function<void(vk::Instance)>> deletionQueue;
+    /// @brief Instance Deletion queue
+    std::deque<std::function<void(vk::Instance)>> instanceDeletionQueue;
+    /// @brief Instance Deletion queue
+    std::deque<std::function<void(vk::Device)>> deviceDeletionQueue;
     /// @brief Main Window
     QubeWindow *qubeWindow;
     /// @brief Main Instance
@@ -20,8 +22,11 @@ private:
     /// @brief Dynamic instance dispatcher
     vk::DispatchLoaderDynamic dild;
     /// @brief A physical device
-    vk::PhysicalDevice phisicalDevice;
+    vk::PhysicalDevice physicalDevice;
+    /// @brief A physical device
+    vk::Device logicalDevice;
     /// @brief Selected Device
-    Device dev;
-    // vk::PhysicalDeviceType::eDiscreteGpu
+    Device mSelectedDevice;
+    /// @brief Graphics queue
+    vk::Queue graphicsQueue;
 };
