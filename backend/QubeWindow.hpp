@@ -15,6 +15,7 @@ public:
     QubeWindow &operator=(const QubeWindow &other) = delete;
 
     bool shouldClose() { return glfwWindowShouldClose(window); }
+    inline GLFWwindow *getWindow() { return window; }
 
 private:
     void initWindow();

@@ -37,17 +37,51 @@ bool Device::supports(const vk::PhysicalDevice &device,
 }
 
 uint32_t Device::findQueueFamilyIndex(const vk::PhysicalDevice &device,
+                                      const vk::SurfaceKHR &surface,
                                       const vk::QueueFlags queueType)
 {
     LOGDEBUG("Finding Queue Family index ...");
     std::vector<vk::QueueFamilyProperties> queueFamilies =
         device.getQueueFamilyProperties();
+    /*
+    for (size_t i = 0; i < queueFamilies.size(); i++)
+    {
+        bool supported = false, presented = false;
+        vk::QueueFamilyProperties queueFamily = queueFamilies[i];
+        if (surface)
+        {
+            presented = device.getSurfaceSupportKHR(i, surface).result == vk::Result::eSuccess ? true : false;
+        }
+        else
+        {
+            presented = false;
+        }
+        if (queueFamily.queueFlags & queueType)
+        {
+            supported = true;
+        }
+        if (supported && presented)
+        {
+            LOGDEBUG("INDEX ISSSSSSSSSSSSSS: ", i);
+            return i;
+        }
+    }
 
+    return UINT32_MAX;
+    */
+
+    int idx = 0;
+    if (!surface)
+        return UINT32_MAX;
     auto itr =
         std::find_if(queueFamilies.begin(), queueFamilies.end(),
-                     [queueType](const vk::QueueFamilyProperties &queueFamily)
+                     [&idx, device, surface, queueType](const vk::QueueFamilyProperties &queueFamily)
                      {
-                         return (queueFamily.queueFlags & queueType);
+                         bool supported = false, presented = false;
+                         presented = device.getSurfaceSupportKHR(idx, surface).result == vk::Result::eSuccess ? true : false;
+                         supported = (queueFamily.queueFlags & queueType) ? true : false;
+                         ++idx;
+                         return (presented & supported);
                      });
 
     return itr != queueFamilies.end()
@@ -92,10 +126,10 @@ vk::PhysicalDevice Device::choose_physical_device(const vk::Instance &instance)
     return nullptr;
 }
 
-vk::Device Device::create_logical_device(const vk::PhysicalDevice &device, std::deque<std::function<void(vk::Device)>> &deviceDeletionQueue)
+vk::Device Device::create_logical_device(const vk::PhysicalDevice &device, const vk::SurfaceKHR &surface, std::deque<std::function<void(vk::Device)>> &deviceDeletionQueue)
 {
     LOGDEBUG("Creating loggical device ...");
-    uint32_t graphicsIndex = findQueueFamilyIndex(device, vk::QueueFlagBits::eGraphics);
+    uint32_t graphicsIndex = findQueueFamilyIndex(device, surface, vk::QueueFlagBits::eGraphics);
 
     vk::PhysicalDeviceFeatures deviceFeatures;
     float queuePriority = 1.0f;

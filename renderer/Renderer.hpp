@@ -29,4 +29,6 @@ private:
     Device mSelectedDevice;
     /// @brief Graphics queue
     vk::Queue graphicsQueue;
+    /// @brief Surface to present
+    vk::SurfaceKHR surface;
 };
