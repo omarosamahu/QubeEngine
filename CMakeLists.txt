@@ -12,6 +12,8 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/renderer/Renderer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/renderer/Instance.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/renderer/Device.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer/SwapChain.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer/Frame.cpp
 )
 
 add_executable(${PROJECT_NAME} src/main.cpp ${SOURCE_FILES})

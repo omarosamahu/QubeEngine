@@ -20,6 +20,18 @@ Engine::Engine(QubeWindow *window) : qubeWindow{window}
 
     uint32_t graphicsIndex = mSelectedDevice.findQueueFamilyIndex(physicalDevice, surface, vk::QueueFlagBits::eGraphics);
     graphicsQueue = logicalDevice.getQueue(graphicsIndex, 0); // 0 represensts the front of the queue family
+
+    int width, height;
+    glfwGetWindowSize(qubeWindow->getWindow(), &width, &height);
+
+    swapchain.build(logicalDevice, physicalDevice, surface, width, height, deviceDeletionQueue);
+
+    std::vector<vk::Image> images = logicalDevice.getSwapchainImagesKHR(swapchain.chain).value;
+
+    for (const auto &image : images)
+    {
+        frames.push_back(Frame(image));
+    }
 }
 
 Engine::~Engine()

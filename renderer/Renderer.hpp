@@ -3,6 +3,8 @@
 
 #include <Instance.hpp>
 #include <Device.hpp>
+#include <SwapChain.hpp>
+#include <Frame.hpp>
 
 class Engine
 {
@@ -31,4 +33,7 @@ private:
     vk::Queue graphicsQueue;
     /// @brief Surface to present
     vk::SurfaceKHR surface;
+
+    SwapChain swapchain;
+    std::vector<Frame> frames;
 };

@@ -137,11 +137,14 @@ vk::Device Device::create_logical_device(const vk::PhysicalDevice &device, const
     vk::DeviceQueueCreateInfo queueInfo = vk::DeviceQueueCreateInfo(vk::DeviceQueueCreateFlags(), graphicsIndex, 1, &queuePriority);
     uint32_t enabled_layer_count = 1;
 
+    // Requesting extenstions from the logical device
+
     std::vector<const char *> enabledLayer{"VK_LAYER_KHRONOS_validation"};
+    std::vector<const char *> enabledExtentions{"VK_KHR_swapchain"};
 
     vk::DeviceCreateInfo deviceInfo = vk::DeviceCreateInfo({},
                                                            1, &queueInfo, enabled_layer_count, enabledLayer.data(),
-                                                           0, nullptr, &deviceFeatures);
+                                                           enabledExtentions.size(), enabledExtentions.data(), &deviceFeatures);
 
     vk::ResultValueType<vk::Device>::type logicalDevice = device.createDevice(deviceInfo);
     if (logicalDevice.result == vk::Result::eSuccess)
