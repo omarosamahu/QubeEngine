@@ -3,7 +3,7 @@
 Engine::Engine(QubeWindow *window) : qubeWindow{window}
 {
     LOGINFO("Initialize engine");
-    mInstance = make_instance("Real Engine", instanceDeletionQueue);
+    mInstance = QubeInstance().make_instance("Real Engine", instanceDeletionQueue);
     dild = vk::DispatchLoaderDynamic(mInstance, vkGetInstanceProcAddr);
 
     VkSurfaceKHR rawSurface;

@@ -1,7 +1,7 @@
 #include <Instance.hpp>
 #include <Logger.hpp>
 
-vk::Instance make_instance(const std::string &appName, std::deque<std::function<void(vk::Instance)>> &deleteionQueue)
+vk::Instance QubeInstance::make_instance(const std::string &appName, std::deque<std::function<void(vk::Instance)>> &deleteionQueue)
 {
     LOGINFO("Making an instance...");
     auto version = vk::enumerateInstanceVersion().value;

@@ -1,7 +1,7 @@
 #include <SwapChain.hpp>
 #include <cmath>
 
-void SwapChain::build(const vk::Device &logicalDevice, const vk::PhysicalDevice &physicalDevice, const vk::SurfaceKHR &surface, const uint32_t width, const uint32_t height, std::deque<std::function<void(vk::Device)>> &deviceDeletionQueue)
+void SwapChain::build(vk::Device logicalDevice, vk::PhysicalDevice physicalDevice, const vk::SurfaceKHR &surface, const uint32_t width, const uint32_t height, std::deque<std::function<void(vk::Device)>> &deviceDeletionQueue)
 {
     auto support = query_surface_support(physicalDevice, surface);
     format = choose_surface_format(support.formats);
@@ -29,7 +29,7 @@ void SwapChain::build(const vk::Device &logicalDevice, const vk::PhysicalDevice 
     }
 
     chain = result.value;
-    deviceDeletionQueue.emplace_back([this](const vk::Device &device)
+    deviceDeletionQueue.emplace_back([this](vk::Device device)
                                      { device.destroy(chain); });
 }
 
@@ -62,7 +62,7 @@ vk::Extent2D SwapChain::choose_extent(uint32_t width, uint32_t height, const vk:
     return extent;
 }
 
-SurfaceDetails SwapChain::query_surface_support(const vk::PhysicalDevice &device, const vk::SurfaceKHR &surface)
+SurfaceDetails SwapChain::query_surface_support(vk::PhysicalDevice device, const vk::SurfaceKHR &surface)
 {
     LOGDEBUG("Check if the surface can support ...");
     SurfaceDetails support;

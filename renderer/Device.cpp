@@ -7,7 +7,7 @@
 /// @param ppRequestedExtensions
 /// @param pequestedExtensionsCounst
 /// @return
-bool Device::supports(const vk::PhysicalDevice &device,
+bool Device::supports(vk::PhysicalDevice device,
                       const char **ppRequestedExtensions,
                       const uint32_t pequestedExtensionsCounst)
 {
@@ -36,8 +36,8 @@ bool Device::supports(const vk::PhysicalDevice &device,
     return true;
 }
 
-uint32_t Device::findQueueFamilyIndex(const vk::PhysicalDevice &device,
-                                      const vk::SurfaceKHR &surface,
+uint32_t Device::findQueueFamilyIndex(vk::PhysicalDevice device,
+                                      vk::SurfaceKHR surface,
                                       const vk::QueueFlags queueType)
 {
     LOGDEBUG("Finding Queue Family index ...");
@@ -89,7 +89,7 @@ uint32_t Device::findQueueFamilyIndex(const vk::PhysicalDevice &device,
                : UINT32_MAX;
 }
 
-bool Device::is_suitable(const vk::PhysicalDevice &device)
+bool Device::is_suitable(vk::PhysicalDevice device)
 {
     LOGINFO("Checking if the device is suitable ...");
 
@@ -108,12 +108,12 @@ bool Device::is_suitable(const vk::PhysicalDevice &device)
     return true;
 }
 
-vk::PhysicalDevice Device::choose_physical_device(const vk::Instance &instance)
+vk::PhysicalDevice Device::choose_physical_device(vk::Instance instance)
 {
     LOGINFO("Choosing physical device ...");
     std::vector<vk::PhysicalDevice> availableDevices =
         instance.enumeratePhysicalDevices().value;
-    for (const vk::PhysicalDevice &device : availableDevices)
+    for (vk::PhysicalDevice device : availableDevices)
     {
         // device.getProperties().deviceType == vk::PhysicalDeviceType::eIntegratedGpu
         if (is_suitable(device))
@@ -126,7 +126,7 @@ vk::PhysicalDevice Device::choose_physical_device(const vk::Instance &instance)
     return nullptr;
 }
 
-vk::Device Device::create_logical_device(const vk::PhysicalDevice &device, const vk::SurfaceKHR &surface, std::deque<std::function<void(vk::Device)>> &deviceDeletionQueue)
+vk::Device Device::create_logical_device(vk::PhysicalDevice device, const vk::SurfaceKHR &surface, std::deque<std::function<void(vk::Device)>> &deviceDeletionQueue)
 {
     LOGDEBUG("Creating loggical device ...");
     uint32_t graphicsIndex = findQueueFamilyIndex(device, surface, vk::QueueFlagBits::eGraphics);

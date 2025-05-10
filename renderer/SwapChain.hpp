@@ -17,9 +17,9 @@ class SwapChain
 {
 public:
     void build(
-        const vk::Device& logicalDevice,
-        const vk::PhysicalDevice& physicalDevice,
-        const vk::SurfaceKHR& surface,
+        vk::Device logicalDevice,
+        vk::PhysicalDevice physicalDevice,
+        const vk::SurfaceKHR &surface,
         const uint32_t width, const uint32_t height,
         std::deque<std::function<void(vk::Device)>> &deviceDeletionQueue);
 
@@ -51,5 +51,5 @@ public:
         vk::PresentModeKHR choose_present_mode(const std::vector<vk::PresentModeKHR>& presentModes);
         vk::Extent2D choose_extent(uint32_t width, uint32_t height, const vk::SurfaceCapabilitiesKHR &capabilites);
 
-        SurfaceDetails query_surface_support(const vk::PhysicalDevice &device, const vk::SurfaceKHR& surface);
+        SurfaceDetails query_surface_support(vk::PhysicalDevice device, const vk::SurfaceKHR &surface);
 };
